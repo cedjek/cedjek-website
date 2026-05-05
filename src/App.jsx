@@ -309,7 +309,7 @@ const AboutView = () => (
         </p>
       </div>
       
-      <div className="h-64 lg:h-auto relative overflow-hidden"><img src="/about-photo.jpg" alt="About" className="absolute inset-0 w-full h-full object-cover" /></div>
+      <div className="h-64 lg:h-auto relative overflow-hidden"><img src="/11.jpg" alt="About" className="absolute inset-0 w-full h-full object-cover" /></div>
     </div>
     <div className="bg-[#c2bdc6] px-8 md:px-16 py-16"><h2 className="text-4xl font-black mb-6 uppercase">Partner with us?</h2>  
     
