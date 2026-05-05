@@ -31,7 +31,7 @@ const generateWithGemini = async (prompt) => {
 };
 
 // --- DATA ---
-const FAQs_DATA = [
+const FAQ_DATA = [
   {
     question: "What services do you offer?",
     answer: "We specialize in bulk orders of primal cuts, specialty custom cuts, and our signature house-blend longanisa. We offer flexible fulfillment options including door-to-door delivery and scheduled in-store pick-ups."
@@ -455,25 +455,42 @@ const ProductsView = () => {
   );
 };
 
-const FAQsView = () => {
+const FAQView = () => {
   const [openIndex, setOpenIndex] = useState(0);
   return (
     <div className="pt-24 min-h-screen bg-[#eae6e1] px-8 md:px-16">
       <div className="max-w-6xl mx-auto py-12 md:py-24 grid grid-cols-1 md:grid-cols-2 gap-16">
-        <div><h1 className="text-4xl font-black mb-12 uppercase tracking-wide">FAQ</h1></div>
+        <div>
+          <h1 className="text-4xl font-black mb-12 uppercase tracking-wide">
+            FAQ
+          </h1>
+        </div>
         <div className="border-t border-[#d5d0ca]">
-          {FAQ_DATA.map((item, index) => (
+          {FAQ_DATA.map((item, index) => ( 
             <div key={index} className="border-b border-[#d5d0ca]">
-              <button onClick={() => setOpenIndex(openIndex === index ? -1 : index)} className="w-full text-left py-6 font-bold text-sm flex justify-between hover:text-[#e65100]">
-                {item.question} <span>{openIndex === index ? <Minus size={16}/> : <Plus size={16}/>}</span>
+              <button 
+                onClick={() => setOpenIndex(openIndex === index ? -1 : index)} 
+                className="w-full text-left py-6 font-bold text-sm flex justify-between hover:text-[#e65100]"
+              >
+                {item.question} 
+                <span>{openIndex === index ? <Minus size={16}/> : <Plus size={16}/>}</span>
               </button>
-              {openIndex === index && <div className="pb-6 text-sm font-medium text-gray-700 leading-relaxed">{item.answer}</div>}
+              {openIndex === index && (
+                <div className="pb-6 text-sm font-medium text-gray-700 leading-relaxed">
+                  {item.answer}
+                </div>
+              )}
             </div>
           ))}
         </div>
       </div>
+      
+      {/* Restored the bottom form section */}
       <div className="max-w-6xl mx-auto py-12 grid grid-cols-1 md:grid-cols-2 gap-16">
-        <div><h2 className="text-3xl font-black mb-4 uppercase">Have Questions?</h2><p className="font-medium text-sm">We'll get back to you within 48 hours.</p></div>
+        <div>
+          <h2 className="text-3xl font-black mb-4 uppercase">Have Questions?</h2>
+          <p className="font-medium text-sm">We'll get back to you within 48 hours.</p>
+        </div>
         <Form />
       </div>
     </div>
@@ -489,9 +506,9 @@ export default function App() {
       <Header currentView={currentView} setCurrentView={setCurrentView} />
       <main>
         {currentView === 'about' && <AboutView />}
-        {currentView === 'contact' && <div className="pt-32 p-16"><h1 className="text-4xl font-black mb-8 uppercase max-w-6xl mx-auto">Contact Us</h1><div className="max-w-6xl mx-auto"><Form /></div></div>}
+        {currentView === 'contact' && <ContactView />}
         {currentView === 'product-offerings' && <ProductsView />}
-        {currentView === 'services' && <FAQsView />}
+        {currentView === 'services' && <FAQView />}
       </main>
       <Footer />
     </div>
