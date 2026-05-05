@@ -126,14 +126,28 @@ const Form = ({ title, showNewsletter = false, onSubmitSuccess }) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulating network delay for preview
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    setSuccess(true);
-    setFormData({ firstName: '', lastName: '', email: '', message: '', newsletter: false });
-    if (onSubmitSuccess) onSubmitSuccess();
+    // 1. Paste your Google Script URL inside the quotes below!
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwnpxWharoic53E9DGcUHgglNXCib23zyFLN9UOaLgp7MmY0G7rIygsuU53onDdDk3g/exec'; 
     
-    setIsSubmitting(false);
-    setTimeout(() => setSuccess(false), 5000);
+    try {
+      // 2. This packages up the form data and sends it to Google
+      const formBody = new URLSearchParams(formData);
+      await fetch(scriptURL, { 
+        method: 'POST', 
+        body: formBody,
+        mode: 'no-cors' // This prevents browser security blocks
+      });
+      
+      // 3. Show success message and clear the form
+      setSuccess(true);
+      setFormData({ firstName: '', lastName: '', email: '', message: '', newsletter: false });
+      if (onSubmitSuccess) onSubmitSuccess();
+    } catch (error) {
+      console.error('Error!', error.message);
+    } finally {
+      setIsSubmitting(false);
+      setTimeout(() => setSuccess(false), 5000);
+    }
   };
 
   return (
