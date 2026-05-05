@@ -4,7 +4,7 @@ import { Menu, X, Plus, Minus, Sparkles, Loader2, ShoppingCart, MapPin, Phone, C
 // --- CONFIGURATION ---
 const apiKey = ""; // Add your Gemini API key here
 const INQUIRY_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwnpxWharoic53E9DGcUHgglNXCib23zyFLN9UOaLgp7MmY0G7rIygsuU53onDdDk3g/exec'; 
-const ORDERS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwj1xFTHEen8qZiz-EnzIA5vvGXfbKicOMwnRHVLsEi/dev';
+const ORDERS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxuS9TkWAjUILmhWZx5bk5a-cjzzXBqYccACJSmZOQuspJieRvbCzgNwrh-6QycLI_fhw/exec';
 
 // --- GEMINI AI HELPER (with Restored Retry Logic) ---
 const generateWithGemini = async (prompt) => {
