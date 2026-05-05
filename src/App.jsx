@@ -31,7 +31,7 @@ const generateWithGemini = async (prompt) => {
 };
 
 // --- DATA ---
-const FAQ_DATA = [
+const FAQs_DATA = [
   {
     question: "What services do you offer?",
     answer: "We specialize in bulk orders of primal cuts, specialty custom cuts, and our signature house-blend longanisa. We offer flexible fulfillment options including door-to-door delivery and scheduled in-store pick-ups."
@@ -143,7 +143,7 @@ const CheckoutModal = ({ product, isOpen, onClose }) => {
           <div className="py-12 text-center">
             <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6"><ShoppingCart size={40}/></div>
             <h2 className="text-3xl font-black text-[#4a3424]">Order Received!</h2>
-            <p className="text-gray-500 mt-2 text-sm font-bold">Check your SMS for confirmation shortly.</p>
+            <p className="text-gray-500 mt-2 text-sm font-bold">Check your SMS or Email for confirmation shortly.</p>
           </div>
         ) : (
           <form onSubmit={handleOrder} className="space-y-4">
@@ -302,11 +302,42 @@ const AboutView = () => (
         <h1 className="text-4xl md:text-5xl font-black mb-6 uppercase tracking-wide">Who are we?</h1>
         <p className="font-medium mb-12 text-sm leading-relaxed">Quality ingredients are the heart of a great menu. At Ced Jek, we specialize in delivering farm-fresh pork directly to local businesses in Maria Aurora, Aurora.</p>
         <h2 className="text-2xl font-black mb-4 tracking-wide uppercase">Our Roots & Commitment</h2>
-        <p className="text-sm font-medium mb-12 leading-relaxed">Established in 2021, we have built our reputation on a transparent and reliable supply chain. As a business led by agriculturists, we understand the technical side of quality production.</p>
+        <p className="text-sm font-medium mb-12 leading-relaxed"> Established in 2021, we have built our reputation on a transparent and reliable supply chain. As a business led by a former Pastor and a family of Agriculturist with deep roots in the local agricultural community, we understand the technical side of quality production and biosecurity. This expertise allows us to bridge the gap between safe, quality farming and your kitchen.</p>
+         <h2 className="text-2xl font-black mb-4 tracking-wide">WHY PARTNER WITH US?</h2>
+        <p className="font-medium text-sm leading-relaxed">
+          Beyond our own production, we maintain a vast network of well-established piggery suppliers. This ensures that we can consistently meet your volume requirements while maintaining the standards you expect for your customers.
+        </p>
       </div>
+      
       <div className="h-64 lg:h-auto relative overflow-hidden"><img src="/about-photo.jpg" alt="About" className="absolute inset-0 w-full h-full object-cover" /></div>
     </div>
-    <div className="bg-[#c2bdc6] px-8 md:px-16 py-16"><h2 className="text-4xl font-black mb-6 uppercase">Partner with us?</h2><Form showNewsletter={true} /></div>
+    <div className="bg-[#c2bdc6] px-8 md:px-16 py-16"><h2 className="text-4xl font-black mb-6 uppercase">Partner with us?</h2>  
+    
+    <p className="font-medium mb-2 text-sm">We would love to visit your location and show you our product offerings firsthand.
+
+    </p> <Form showNewsletter={true} />
+
+    </div>
+
+  </div>
+
+);
+const ContactView = () => (
+  <div className="pt-24 min-h-screen bg-[#eae6e1]">
+    <div className="grid grid-cols-1 lg:grid-cols-2 h-full min-h-[80vh]">
+      <div className="px-8 md:px-16 py-12 md:py-24 text-[#4a3424] flex flex-col justify-center max-w-2xl">
+        <h1 className="text-4xl md:text-5xl font-black mb-6 tracking-wide leading-tight">BE ONE OF OUR PARTNER?</h1> <p 
+        className="font-medium mb-12 text-sm">Tell us your needs and we'll deliver.</p>
+        <Form showNewsletter={false} />
+      </div>
+      <div className="h-64 lg:h-auto relative">
+        <img 
+          src="https://images.unsplash.com/photo-1516467508483-a7212febe31a?auto=format&fit=crop&q=80&w=1000" 
+          alt="Farm fresh pigs" 
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+      </div>
+    </div>
   </div>
 );
 
@@ -424,7 +455,7 @@ const ProductsView = () => {
   );
 };
 
-const FAQView = () => {
+const FAQsView = () => {
   const [openIndex, setOpenIndex] = useState(0);
   return (
     <div className="pt-24 min-h-screen bg-[#eae6e1] px-8 md:px-16">
@@ -460,7 +491,7 @@ export default function App() {
         {currentView === 'about' && <AboutView />}
         {currentView === 'contact' && <div className="pt-32 p-16"><h1 className="text-4xl font-black mb-8 uppercase max-w-6xl mx-auto">Contact Us</h1><div className="max-w-6xl mx-auto"><Form /></div></div>}
         {currentView === 'product-offerings' && <ProductsView />}
-        {currentView === 'services' && <FAQView />}
+        {currentView === 'services' && <FAQsView />}
       </main>
       <Footer />
     </div>
