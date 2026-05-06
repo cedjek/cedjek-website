@@ -4,7 +4,7 @@ import { Menu, X, Plus, Minus, Sparkles, Loader2, ShoppingCart, MapPin, Phone, C
 // --- CONFIGURATION ---
 const apiKey = ""; // Add your Gemini API key here
 const INQUIRY_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwnpxWharoic53E9DGcUHgglNXCib23zyFLN9UOaLgp7MmY0G7rIygsuU53onDdDk3g/exec'; 
-const ORDERS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby6zQI1NBrrx7TztGSVJLJMx0pVmQPNQIab30IdvMlLSmGKw4Lu1FROYAABp_q5tglLXw/exec';
+const ORDERS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwrhrI5SyPMFzILGiaWar1oBdKQWjhnr7jdXWgcy9bhxOQAm5CfhE4jzKI2mA2szsUSag/exec';
 
 // --- GEMINI AI HELPER (with Restored Retry Logic) ---
 const generateWithGemini = async (prompt) => {
@@ -120,20 +120,22 @@ const CheckoutModal = ({ product, isOpen, onClose }) => {
       }
 
       // 2. Use FormData for better handling of large data (like images)
-      const formPayload = new FormData();
-      formPayload.append('fullName', formData.fullName);
-      formPayload.append('contactNum', formData.contactNumber);
-      formPayload.append('address', formData.address || 'N/A');
-      formPayload.append('productName', product.name);
-      formPayload.append('quantity', formData.quantity);
-      formPayload.append('cutType', formData.cutType);
-      formPayload.append('deliveryDate', formData.deliveryDate);
-      formPayload.append('deliveryTime', formData.deliveryTime);
-      formPayload.append('paymentMethod', formData.paymentMethod);
-      formPayload.append('totalPrice', (product.price * formData.quantity));
-      formPayload.append('fulfillmentType', formData.fulfillmentType);
-      formPayload.append('notes', formData.additionalInstructions); // This fixes the Notes!
-      formPayload.append('receiptFile', fileData); // This sends the image string
+      // ... inside handleOrder ...
+const formPayload = new FormData();
+formPayload.append('fullName', formData.fullName);
+formPayload.append('contactNum', formData.contactNumber);
+formPayload.append('address', formData.address || 'N/A');
+formPayload.append('productName', product.name);
+formPayload.append('quantity', formData.quantity);
+formPayload.append('cutType', formData.cutType);
+formPayload.append('deliveryDate', formData.deliveryDate);
+formPayload.append('deliveryTime', formData.deliveryTime);
+formPayload.append('paymentMethod', formData.paymentMethod);
+formPayload.append('totalPrice', (product.price * formData.quantity));
+formPayload.append('fulfillmentType', formData.fulfillmentType);
+formPayload.append('notes', formData.additionalInstructions); 
+// Ensure this key is EXACTLY 'receiptFile'
+formPayload.append('receiptFile', fileData);
 
       // 3. Send to Google Apps Script
       await fetch(ORDERS_SCRIPT_URL, { 
