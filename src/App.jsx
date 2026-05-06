@@ -4,7 +4,7 @@ import { Menu, X, Plus, Minus, Sparkles, Loader2, ShoppingCart, MapPin, Phone, C
 // --- CONFIGURATION ---
 const apiKey = ""; // Add your Gemini API key here
 const INQUIRY_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwnpxWharoic53E9DGcUHgglNXCib23zyFLN9UOaLgp7MmY0G7rIygsuU53onDdDk3g/exec'; 
-const ORDERS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxuS9TkWAjUILmhWZx5bk5a-cjzzXBqYccACJSmZOQuspJieRvbCzgNwrh-6QycLI_fhw/exec';
+const ORDERS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby6zQI1NBrrx7TztGSVJLJMx0pVmQPNQIab30IdvMlLSmGKw4Lu1FROYAABp_q5tglLXw/exec';
 
 // --- GEMINI AI HELPER (with Restored Retry Logic) ---
 const generateWithGemini = async (prompt) => {
@@ -67,42 +67,26 @@ const PRODUCTS_DATA = {
     id: 'specific',
     name: 'SPECIFIC CUTS',
     price: 350,
-    subtitle: 'Price starts at Php 350.00 (Partners enjoy incentives and discounts)',
-    options: ['Pork Shoulder', 'Pork Loin', 'Pork Belly', 'Pork Leg'],
+    subtitle: 'Price starts at Php 350.00',
+    // Combined list for the dropdown
+    options: [
+      'Boston Butt (Blade Shoulder)', 'Picnic Shoulder', 'Hock & Trotter',
+      'Tenderloin', 'Pork Chops', 'Baby Back Ribs',
+      'Bacon', 'Spare Ribs', 'Pork Belly Strips'
+    ],
     sections: [
-      {
-        title: 'Pork Shoulder (Front)',
-        items: [
-          'Boston Butt (Blade Shoulder): The upper part of the shoulder, well-marbled and the standard for pulled pork.',
-          'Picnic Shoulder: The lower portion of the shoulder. Tougher than the butt.',
-          'Hock & Trotter: The lower leg (hock) and foot (trotter).'
-        ]
-      },
-      {
-        title: 'Pork Loin (Back)',
-        items: [
-          'Tenderloin: A small, very lean muscle. Most tender cut.',
-          'Pork Chops: Sliced from the loin; bone-in or boneless.',
-          'Baby Back Ribs: Shorter and leaner than spare ribs.'
-        ]
-      },
-      {
-        title: 'Pork Belly (Underside)',
-        items: [
-          'Bacon: The most famous use for the belly.',
-          'Spare Ribs: Meatier and fattier than baby backs.',
-          'Pork Belly Strips: Perfect for Samgyeopsal or braised dishes.'
-        ]
-      }
+      { title: 'PORK SHOULDER (FRONT)', items: ['Boston Butt (Blade Shoulder)', 'Picnic Shoulder', 'Hock & Trotter'] },
+      { title: 'PORK LOIN (BACK)', items: ['Tenderloin', 'Pork Chops', 'Baby Back Ribs'] },
+      { title: 'PORK BELLY (UNDERSIDE)', items: ['Bacon', 'Spare Ribs', 'Pork Belly Strips'] }
     ]
   },
   primal: {
     id: 'primal',
     name: 'PRIMAL CUTS',
     price: 320,
-    subtitle: 'Price starts at Php 320.00 (Partners enjoy incentives and discounts)',
-    options: ['Whole Blade', 'Arm Shoulder', 'Full Loin', 'Full Side'],
-    details: ['Blade shoulder, Arm Shoulder, Head, Loin Side, Spare Rib, Hock, Leg, Side']
+    subtitle: 'Price starts at Php 320.00',
+    options: ['Blade shoulder', 'Arm Shoulder', 'Head', 'Loin Side', 'Spare Rib', 'Hock', 'Leg', 'Side'],
+    details: ['Blade shoulder', 'Arm Shoulder', 'Head', 'Loin Side', 'Spare Rib', 'Hock', 'Leg', 'Side']
   }
 };
 
@@ -114,25 +98,62 @@ const CheckoutModal = ({ product, isOpen, onClose }) => {
   const [formData, setFormData] = useState({
     fullName: '', contactNumber: '', address: '', quantity: 1,
     cutType: product?.options[0] || '', deliveryDate: '', deliveryTime: '',
-    paymentMethod: 'Cash on Delivery', fulfillmentType: 'Delivery'
+    paymentMethod: 'Cash on Delivery', fulfillmentType: 'Delivery', additionalInstructions: ''
   });
 
   if (!isOpen) return null;
 
-  const handleOrder = async (e) => {
+ const handleOrder = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    const params = new URLSearchParams({
-      ...formData,
-      productName: product.name,
-      totalPrice: (product.price * formData.quantity)
-    });
+    
     try {
-      await fetch(ORDERS_SCRIPT_URL, { method: 'POST', body: params, mode: 'no-cors' });
+      // 1. Handle File Conversion (Base64)
+      let fileData = "";
+      const fileInput = e.target.querySelector('input[type="file"]');
+      if (fileInput && fileInput.files[0]) {
+        fileData = await new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.readAsDataURL(fileInput.files[0]);
+        });
+      }
+
+      // 2. Use FormData for better handling of large data (like images)
+      const formPayload = new FormData();
+      formPayload.append('fullName', formData.fullName);
+      formPayload.append('contactNum', formData.contactNumber);
+      formPayload.append('address', formData.address || 'N/A');
+      formPayload.append('productName', product.name);
+      formPayload.append('quantity', formData.quantity);
+      formPayload.append('cutType', formData.cutType);
+      formPayload.append('deliveryDate', formData.deliveryDate);
+      formPayload.append('deliveryTime', formData.deliveryTime);
+      formPayload.append('paymentMethod', formData.paymentMethod);
+      formPayload.append('totalPrice', (product.price * formData.quantity));
+      formPayload.append('fulfillmentType', formData.fulfillmentType);
+      formPayload.append('notes', formData.additionalInstructions); // This fixes the Notes!
+      formPayload.append('receiptFile', fileData); // This sends the image string
+
+      // 3. Send to Google Apps Script
+      await fetch(ORDERS_SCRIPT_URL, { 
+        method: 'POST', 
+        body: formPayload, 
+        mode: 'no-cors' 
+      });
+
       setSuccess(true);
-      setTimeout(() => { onClose(); setSuccess(false); }, 3000);
-    } catch (err) { alert("Error submitting order."); }
-    setIsSubmitting(false);
+      setTimeout(() => { 
+        onClose(); 
+        setSuccess(false); 
+      }, 3000);
+
+    } catch (err) { 
+      console.error(err);
+      alert("Error submitting order. Please check your connection."); 
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -180,6 +201,14 @@ const CheckoutModal = ({ product, isOpen, onClose }) => {
                 <input type="date" required className="bg-gray-50 p-3 rounded-xl text-sm font-bold" onChange={e => setFormData({...formData, deliveryDate: e.target.value})} />
                 <input type="time" required className="bg-gray-50 p-3 rounded-xl text-sm font-bold" onChange={e => setFormData({...formData, deliveryTime: e.target.value})} />
               </div>
+              <div className="space-y-2">
+  <label className="text-[9px] font-black block text-gray-400 uppercase">Additional Instructions (Optional)</label>
+  <textarea 
+    placeholder="e.g. Please slice thin for samgyupsal, or knock before entering..."
+    className="w-full bg-gray-50 rounded-xl px-5 py-3 outline-[#e65100] font-medium text-sm h-20 resize-none"
+    onChange={e => setFormData({...formData, additionalInstructions: e.target.value})}
+  ></textarea>
+</div>
               <select 
                 className="w-full bg-gray-50 rounded-xl px-5 py-3 font-bold text-sm outline-none border-2 border-transparent focus:border-[#e65100]" 
                 value={formData.paymentMethod}
