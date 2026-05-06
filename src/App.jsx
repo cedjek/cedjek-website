@@ -180,11 +180,46 @@ const CheckoutModal = ({ product, isOpen, onClose }) => {
                 <input type="date" required className="bg-gray-50 p-3 rounded-xl text-sm font-bold" onChange={e => setFormData({...formData, deliveryDate: e.target.value})} />
                 <input type="time" required className="bg-gray-50 p-3 rounded-xl text-sm font-bold" onChange={e => setFormData({...formData, deliveryTime: e.target.value})} />
               </div>
-              <select className="w-full bg-gray-50 rounded-xl px-5 py-3 font-bold text-sm outline-none" onChange={e => setFormData({...formData, paymentMethod: e.target.value})}>
-                <option>Cash on {formData.fulfillmentType}</option>
-                <option>GCash</option>
-                <option>Online Banking</option>
+              <select 
+                className="w-full bg-gray-50 rounded-xl px-5 py-3 font-bold text-sm outline-none border-2 border-transparent focus:border-[#e65100]" 
+                value={formData.paymentMethod}
+                onChange={e => setFormData({...formData, paymentMethod: e.target.value})}
+              >
+                <option value="Cash on Delivery">Cash on {formData.fulfillmentType}</option>
+                <option value="GCash">GCash</option>
+                <option value="Online Banking">Online Banking</option>
               </select>
+
+              {/* Conditional QR Code for Online Banking */}
+              {formData.paymentMethod === "Online Banking" && (
+                <div className="flex flex-col items-center p-4 border-2 border-dashed border-orange-200 rounded-2xl bg-orange-50 mt-3">
+                  <p className="text-[10px] font-black mb-2 text-[#e65100]">SCAN TO PAY (BANK)</p>
+                  <img src="/bank-qr.png" alt="Bank QR" className="w-32 h-32 rounded-lg bg-white p-1" />
+                  <span className="text-[10px] font-bold text-[#4a3424] mt-2 text-center">BDO<br/>J*e* B****t*e</span>
+                </div>
+              )}
+
+              {/* Conditional QR Code for GCash */}
+              {formData.paymentMethod === "GCash" && (
+                <div className="flex flex-col items-center p-4 border-2 border-dashed border-blue-100 rounded-2xl bg-blue-50 mt-3">
+                  <p className="text-[10px] font-black mb-2 text-blue-600">SCAN TO PAY (GCASH)</p>
+                  <img src="/gcash-qr.png" alt="GCash QR" className="w-32 h-32 rounded-lg bg-white p-1" />
+                  <span className="text-[10px] font-bold text-[#4a3424] mt-2">GCASH: 0961-842-0618<br/>J*e* B****t*e</span>
+                </div>
+              )}
+
+              {/* File Upload Section */}
+              {(formData.paymentMethod === "GCash" || formData.paymentMethod === "Online Banking") && (
+                <div className="p-4 bg-gray-50 rounded-2xl border border-gray-100 mt-3">
+                  <label className="block text-[9px] font-black mb-2 uppercase text-gray-400">Upload Receipt Screenshot</label>
+                  <input 
+                    type="file" 
+                    required 
+                    accept="image/*"
+                    className="block w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-[10px] file:font-black file:bg-[#4a3424] file:text-white hover:file:bg-black"
+                  />
+                </div>
+              )}
             </div>
             <div className="pt-6 border-t flex items-center justify-between">
                <div><p className="text-[10px] font-black text-gray-400 uppercase tracking-tighter">Total Amount</p><p className="text-2xl font-black text-[#e65100]">₱{(product.price * formData.quantity).toLocaleString()}</p></div>
