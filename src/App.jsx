@@ -321,10 +321,47 @@ const Header = ({ currentView, setCurrentView }) => {
 };
 
 const Footer = () => (
-  <footer className="bg-[#eae6e1] text-[#4a3424] pt-16 pb-24 px-6 md:px-16 grid grid-cols-1 md:grid-cols-3 gap-12 border-t border-[#d5d0ca]">
-    <div><h2 className="text-3xl font-black text-[#e65100] mb-8 uppercase tracking-tighter">Fresh is Best</h2><p className="text-sm font-bold">To God be the Glory!</p></div>
-    <div><h3 className="font-black uppercase mb-4 tracking-widest">Location</h3><p className="text-sm font-medium leading-relaxed">Stall 11, Wet Market<br/>3202, Maria Aurora, Aurora Public Market</p></div>
-    <div><h3 className="font-black uppercase mb-4 tracking-widest">Contact</h3><p className="text-sm font-medium leading-relaxed">fresh@cedjek.com<br/>+63 (961) 842 0618</p></div>
+  <footer className="bg-[#eae6e1] text-[#4a3424] pt-16 pb-24 px-6 md:px-16 border-t border-[#d5d0ca]">
+    <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+      {/* Section 1: Branding */}
+      <div>
+        <h2 className="text-3xl font-black text-[#e65100] mb-8 uppercase tracking-tighter">Fresh is Best</h2>
+        <p className="text-sm font-bold">To God be the Glory!</p>
+      </div>
+
+      {/* Section 2: Location Text */}
+      <div>
+        <h3 className="font-black uppercase mb-4 tracking-widest text-xs">Location</h3>
+        <p className="text-sm font-medium leading-relaxed">
+          Stall 11, Wet Market<br/>
+          3202, Maria Aurora,<br/>
+          Aurora Public Market
+        </p>
+      </div>
+
+      {/* Section 3: Contact Details */}
+      <div>
+        <h3 className="font-black uppercase mb-4 tracking-widest text-xs">Contact</h3>
+        <p className="text-sm font-medium leading-relaxed">
+          fresh@cedjek.com<br/>
+          +63 (961) 842 0618
+        </p>
+      </div>
+
+      {/* Section 4: The Map (Right Side) */}
+      <div className="h-48 w-full rounded-2xl overflow-hidden border-2 border-white shadow-sm">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3839.23123456789!2d121.474!3d15.795!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x339066666666666b%3A0x6666666666666666!2sMaria%20Aurora%20Public%20Market!5e0!3m2!1sen!2sph!4v1715000000000!5m2!1sen!2sph"
+          width="100%"
+          height="100%"
+          style={{ border: 0 }}
+          allowFullScreen=""
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          className="grayscale hover:grayscale-0 transition-all duration-500"
+        ></iframe>
+      </div>
+    </div>
   </footer>
 );
 
