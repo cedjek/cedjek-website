@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Menu, X, Plus, Minus, Sparkles, Loader2, ShoppingCart, MapPin, Phone, Calendar } from 'lucide-react';
 
 // --- CONFIGURATION ---
-const apiKey = ""; // api set wala pa nailagay ehe
+const apiKey = "AIzaSyBSKDTrsyiSQm3e2Z12BGhd7rSEAkAoNCA";
 const INQUIRY_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwnpxWharoic53E9DGcUHgglNXCib23zyFLN9UOaLgp7MmY0G7rIygsuU53onDdDk3g/exec'; 
 const ORDERS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwN6uECdfxmpxIH1_cjAPf6tjQmA8icTdZ3hd6FYMvlMnOG8_RxkwGcVKLK_mUN31Qwxg/exec';
 
