@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { Menu, X, Plus, Minus, Sparkles, Loader2, ShoppingCart, MapPin, Phone, Calendar } from 'lucide-react';
 
 // --- CONFIGURATION ---
-const apiKey = ""; // Add your Gemini API key here
+const apiKey = ""; // api set wala pa nailagay ehe
 const INQUIRY_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwnpxWharoic53E9DGcUHgglNXCib23zyFLN9UOaLgp7MmY0G7rIygsuU53onDdDk3g/exec'; 
-const ORDERS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx1F4RWTqtCmTT0lxJoV4F5G5ljHOHRyopZp6ebB1OspNrtWJ_7fLTe8cvaaPCEizP9ew/exec';
+const ORDERS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz8vSdW_cIQ1k4hbFSu0A-NVDquaJnghhP22cWLv9oZOBHMT69oble9xxmSE8Ch0UsOiQ/exec';
 
-// --- GEMINI AI HELPER (with Restored Retry Logic) ---
+// --- AI Integration with Gemini (Not yet done pang future eme)
 const generateWithGemini = async (prompt) => {
   if (!apiKey) return "Please add your Gemini API Key to use the AI features!";
   
@@ -54,6 +54,7 @@ const FAQ_DATA = [
   }
 ];
 
+// --- PRODUCTS DATA ---
 const PRODUCTS_DATA = {
   longanisa: {
     id: 'longanisa',
