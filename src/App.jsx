@@ -3,12 +3,12 @@ import { Menu, X, Plus, Minus, Sparkles, Loader2, ShoppingCart, MapPin, Phone, C
 
 // --- CONFIGURATION ---
 const apiKey = "AIzaSyBSKDTrsyiSQm3e2Z12BGhd7rSEAkAoNCA";
-const INQUIRY_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwnpxWharoic53E9DGcUHgglNXCib23zyFLN9UOaLgp7MmY0G7rIygsuU53onDdDk3g/exec'; 
+const INQUIRY_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz2hwh-1KQ-6IxCVRPATmDnWjgt9Op3dnhDzyKpUf-zJMqIT4HUf8foM0iva1aCdOs/exec'; 
 const ORDERS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwN6uECdfxmpxIH1_cjAPf6tjQmA8icTdZ3hd6FYMvlMnOG8_RxkwGcVKLK_mUN31Qwxg/exec';
 
 // --- AI Integration with Gemini (Not yet done pang future eme)
 const generateWithGemini = async (prompt) => {
-  if (!apiKey) return "Please add your Gemini API Key to use the AI features!";
+  if (!apiKey) return "AI currently busy!";
   
   const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
   const payload = { contents: [{ parts: [{ text: prompt }] }] };
@@ -35,6 +35,36 @@ const FAQ_DATA = [
   {
     question: "What services do you offer?",
     answer: "We specialize in bulk orders of primal cuts, specialty custom cuts, and our signature house-blend longanisa. We offer flexible fulfillment options including door-to-door delivery and scheduled in-store pick-ups."
+  },
+  {question: "Where are you located?",
+    answer: "We are located in Stall 11, Wet Market, Maria Aurora, Aurora Public Market." 
+  },
+  {
+    question: "How do I get started?",
+    answer: "Reach out through our contact form or schedule a call, and we'll guide you through our partnership process. For in-depth discussion, we can coordinate online consultations or personal meetings."
+  },
+  {
+    question: "How can I contact you?",
+    answer: "You can reach us anytime via our contact page or email. We aim to respond quickly—usually within one business day."
+  },
+  {
+    question: "What's your pricing model?",
+    answer: "At Ced Jek, we work with our partners to find pricing that works for everyone. Once we talk, we'll give you a clear price list with no extra charges."
+  },
+  {
+    question: "What's it like to work with you?",
+    answer: "Collaborative, honest, and straightforward. We're here to guide the process, bring ideas to the table, and keep things moving."
+  }
+];
+
+// --- DATA ---
+const PartnerFAQ_DATA = [
+  {
+    question: "What services do you offer?",
+    answer: "We specialize in bulk orders of primal cuts, specialty custom cuts, and our signature house-blend longanisa. We offer flexible fulfillment options including door-to-door delivery and scheduled in-store pick-ups."
+  },
+  {question: "Where are you located?",
+    answer: "We are located in Stall 11, Wet Market, Maria Aurora, Aurora Public Market." 
   },
   {
     question: "How do I get started?",
@@ -109,7 +139,7 @@ const CheckoutModal = ({ product, isOpen, onClose }) => {
     setIsSubmitting(true);
     
     try {
-      // 1. Handle File Conversion (Base64)
+      // 1. Handle File Conversion (Base64) 
       let fileData = "";
       const fileInput = e.target.querySelector('input[type="file"]');
       if (fileInput && fileInput.files[0]) {
@@ -186,7 +216,7 @@ formPayload.append('receiptFile', fileData);
               {formData.fulfillmentType === 'Delivery' ? (
                 <input required placeholder="Complete Delivery Address" className="w-full bg-gray-50 rounded-xl px-5 py-3 outline-[#e65100] font-medium" onChange={e => setFormData({...formData, address: e.target.value})} />
               ) : (
-                <div className="p-4 bg-orange-50 rounded-xl border border-orange-100 text-[11px] font-bold text-[#4a3424]">Pickup at: Stall 11, Maria Aurora Public Market</div>
+                <div className="p-4 bg-orange-50 rounded-xl border border-orange-100 text-[11px] font-bold text-[#4a3424]">Pickup at: Stall 11, Maria Aurora, Aurora Public Market</div>
               )}
               <div className="grid grid-cols-2 gap-3">
                 <div className="bg-gray-50 p-3 rounded-xl">
@@ -267,7 +297,20 @@ formPayload.append('receiptFile', fileData);
 };
 
 const Form = ({ showNewsletter = false, onSubmitSuccess }) => {
-  const [formData, setFormData] = useState({ firstName: '', lastName: '', email: '', message: '', newsletter: false });
+  const [formData, setFormData] = useState({ 
+    firstName: '', 
+    lastName: '', 
+    email: '', 
+    businessName: '', 
+    businessIndustry: '', 
+    businessLocation: '', 
+    message: '', 
+    newsletter: false,
+    setAppointment: false,
+    appointmentDate: '',
+    appointmentType: '',
+    appointmentLocation: 'Cedjek Home Office'
+  });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
 
@@ -276,21 +319,55 @@ const Form = ({ showNewsletter = false, onSubmitSuccess }) => {
     setFormData(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
   };
 
-  const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    
     try {
-      const formBody = new URLSearchParams(formData);
-      await fetch(INQUIRY_SCRIPT_URL, { method: 'POST', body: formBody, mode: 'no-cors' });
+      // Create a URL-encoded body
+      const params = new URLSearchParams();
+      params.append('firstName', formData.firstName);
+      params.append('lastName', formData.lastName);
+      params.append('email', formData.email);
+      params.append('businessName', formData.businessName || 'N/A');
+      params.append('businessIndustry', formData.businessIndustry);
+      params.append('businessLocation', formData.businessLocation || 'N/A');
+      params.append('message', formData.message);
+      params.append('newsletter', formData.newsletter);
+      
+      // Appointment Fields
+      params.append('setAppointment', formData.setAppointment);
+      params.append('appointmentDate', formData.appointmentDate || 'N/A');
+      params.append('appointmentType', formData.appointmentType || 'N/A');
+      params.append('appointmentLocation', formData.appointmentLocation);
+
+      await fetch(INQUIRY_SCRIPT_URL, { 
+        method: 'POST', 
+        body: params, 
+        mode: 'no-cors' 
+      });
+
       setSuccess(true);
-      setFormData({ firstName: '', lastName: '', email: '', message: '', newsletter: false });
+      // Reset form
+      setFormData({ 
+        firstName: '', lastName: '', email: '', 
+        businessName: '', businessIndustry: '', businessLocation: '', 
+        message: '', newsletter: false, setAppointment: false,
+        appointmentDate: '', appointmentType: '', appointmentLocation: 'Cedjek Home Office' 
+      });
       if (onSubmitSuccess) onSubmitSuccess();
-    } catch (error) { console.error('Error!', error.message); }
-    finally { setIsSubmitting(false); setTimeout(() => setSuccess(false), 5000); }
+    } catch (error) { 
+      console.error('Error!', error.message);
+      alert("Submission failed. Please try again.");
+    } finally { 
+      setIsSubmitting(false); 
+      setTimeout(() => setSuccess(false), 5000); 
+    }
   };
 
   return (
     <form onSubmit={handleSubmit} className="w-full max-w-2xl text-[#4a3424]">
+      {/* Name Row */}
       <div className="flex flex-col md:flex-row gap-4 mb-4">
         <div className="flex-1">
           <label className="block text-xs font-bold mb-1">First Name <span className="text-gray-500 font-normal">(required)</span></label>
@@ -301,20 +378,72 @@ const Form = ({ showNewsletter = false, onSubmitSuccess }) => {
           <input required type="text" name="lastName" value={formData.lastName} onChange={handleChange} className="w-full bg-transparent border-2 border-[#6c5545] rounded-full px-4 py-2 outline-none focus:border-[#4a3424]" />
         </div>
       </div>
+
+      {/* Email Row */}
       <div className="mb-4">
         <label className="block text-xs font-bold mb-1">Email <span className="text-gray-500 font-normal">(required)</span></label>
         <input required type="email" name="email" value={formData.email} onChange={handleChange} className="w-full bg-transparent border-2 border-[#6c5545] rounded-full px-4 py-2 outline-none focus:border-[#4a3424]" />
       </div>
+
+      {/* Business Details Row */}
+      <div className="flex flex-col md:flex-row gap-4 mb-4">
+        <div className="flex-1">
+          <label className="block text-xs font-bold mb-1">Business Name <span className="text-gray-500 font-normal">(optional)</span></label>
+          <input type="text" name="businessName" value={formData.businessName} onChange={handleChange} className="w-full bg-transparent border-2 border-[#6c5545] rounded-full px-4 py-2 outline-none focus:border-[#4a3424]" />
+        </div>
+        <div className="flex-1">
+          <label className="block text-xs font-bold mb-1">Business Industry <span className="text-gray-500 font-normal">(required)</span></label>
+          <input required type="text" name="businessIndustry" value={formData.businessIndustry} onChange={handleChange} className="w-full bg-transparent border-2 border-[#6c5545] rounded-full px-4 py-2 outline-none focus:border-[#4a3424]" />
+        </div>
+      </div>
+
+      {/* Location Row */}
+      <div className="mb-4">
+        <label className="block text-xs font-bold mb-1">Business Location <span className="text-gray-500 font-normal">(optional)</span></label>
+        <input type="text" name="businessLocation" value={formData.businessLocation} onChange={handleChange} className="w-full bg-transparent border-2 border-[#6c5545] rounded-full px-4 py-2 outline-none focus:border-[#4a3424]" />
+      </div>
+
+      {/* Appointment Section */}
+      <div className="mb-4 p-5 bg-white/30 rounded-2xl border-2 border-dashed border-[#6c5545]">
+        <div className="flex items-center gap-2 mb-4">
+          <input type="checkbox" name="setAppointment" id="setAppointment" checked={formData.setAppointment} onChange={handleChange} className="accent-[#4a3424] w-4 h-4" />
+          <label htmlFor="setAppointment" className="text-xs font-black uppercase flex items-center gap-1 cursor-pointer"><Calendar size={14}/> Set an Appointment? (Optional)</label>
+        </div>
+
+        {formData.setAppointment && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-in fade-in slide-in-from-top-2 duration-300">
+            <div>
+              <label className="block text-[10px] font-bold mb-1 uppercase">Date of Appointment</label>
+              <input type="date" name="appointmentDate" value={formData.appointmentDate} onChange={handleChange} className="w-full bg-white/50 border-2 border-[#6c5545] rounded-xl px-3 py-2 text-sm outline-none" />
+            </div>
+            <div>
+              <label className="block text-[10px] font-bold mb-1 uppercase">Type of Appointment</label>
+              <input type="text" name="appointmentType" value={formData.appointmentType} onChange={handleChange} placeholder="e.g. Sampling, Consultation" className="w-full bg-white/50 border-2 border-[#6c5545] rounded-xl px-3 py-2 text-sm outline-none" />
+            </div>
+            <div className="md:col-span-2">
+              <label className="block text-[10px] font-bold mb-1 uppercase">Location of Appointment</label>
+              <select name="appointmentLocation" value={formData.appointmentLocation} onChange={handleChange} className="w-full bg-white/50 border-2 border-[#6c5545] rounded-xl px-3 py-2 text-sm outline-none">
+                <option value="Cedjek Home Office">Cedjek Home Office</option>
+                <option value="Appointment Setter Office">Appointment Setter Office (Specify in message)</option>
+                <option value="Input other location (Specify in message)">Other location (Specify in message)</option>
+              </select>
+            </div>
+          </div>
+        )}
+      </div>
+
       {showNewsletter && (
         <div className="mb-4 flex items-center gap-2">
           <input type="checkbox" name="newsletter" id="newsletter" checked={formData.newsletter} onChange={handleChange} className="accent-[#4a3424]" />
           <label htmlFor="newsletter" className="text-xs font-bold uppercase">SIGN UP FOR NEWS AND UPDATES</label>
         </div>
       )}
+
       <div className="mb-6">
         <label className="block text-xs font-bold mb-1">Message <span className="text-gray-500 font-normal">(required)</span></label>
         <textarea required name="message" value={formData.message} onChange={handleChange} rows={4} className="w-full bg-transparent border-2 border-[#6c5545] rounded-2xl px-4 py-3 resize-none outline-none focus:border-[#4a3424]"></textarea>
       </div>
+
       {success ? (
         <div className="bg-green-100 text-green-800 px-4 py-3 rounded-full font-bold inline-block">Thank you! We've received your message.</div>
       ) : (
