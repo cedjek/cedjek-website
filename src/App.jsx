@@ -4,7 +4,7 @@ import { Menu, X, Plus, Minus, Sparkles, Loader2, ShoppingCart, MapPin, Phone, C
 // --- CONFIGURATION ---
 const apiKey = "AIzaSyBSKDTrsyiSQm3e2Z12BGhd7rSEAkAoNCA";
 const INQUIRY_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz2hwh-1KQ-6IxCVRPATmDnWjgt9Op3dnhDzyKpUf-zJMqIT4HUf8foM0iva1aCdOs/exec'; 
-const ORDERS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwN6uECdfxmpxIH1_cjAPf6tjQmA8icTdZ3hd6FYMvlMnOG8_RxkwGcVKLK_mUN31Qwxg/exec';
+const ORDERS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxKh4mCIQKcKEUmHiXLpMCPAOKmCQq3I8M6qzgu7n582x_IERimFna_YkDKrscQdx-wsA/exec';
 
 // --- AI Integration with Gemini (Not yet done pang future eme)
 const generateWithGemini = async (prompt) => {
