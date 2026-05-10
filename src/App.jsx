@@ -516,20 +516,19 @@ const Header = ({ currentView, setCurrentView }) => {
         ))}
 
         {/* Facebook Link beside Services */}
-        <a 
-          href="https://www.facebook.com/cedjek" // Your FB Link
-          target="_blank" 
-          rel="noopener noreferrer" 
-          className="ml-2 p-2 text-[#4a3424] hover:text-[#e65100] transition-all hover:scale-110"
-          title="Follow us on Facebook"
-        >
-          <img 
-  src="https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg" 
-  alt="Facebook" 
-  className="w-5 h-5" 
-  style={{ filter: 'sepia(1) saturate(5) hue-rotate(330deg) brightness(0.5)' }} 
-/>
-        </a>
+<a 
+  href="https://www.facebook.com/cedjek" 
+  target="_blank" 
+  rel="noopener noreferrer" 
+  className="ml-2 p-2 flex items-center transition-all hover:scale-110"
+>
+  <img 
+    src="https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg" 
+    alt="Facebook" 
+    className="w-5 h-5" 
+    style={{ filter: 'sepia(1) saturate(5) hue-rotate(330deg) brightness(0.5)' }} 
+  />
+</a>
       </nav>
 
       <button className="md:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
@@ -547,15 +546,16 @@ const Header = ({ currentView, setCurrentView }) => {
               {item}
             </button>
           ))}
-          {/* Mobile Facebook Link */}
-          <a 
-            href="https://www.facebook.com/cedjek" 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            className="flex items-center gap-2 text-[#e65100] font-bold"
-          >
-            <Link size={20} /> Facebook
-          </a>
+         {/* Mobile Facebook Link */}
+<a 
+  href="https://www.facebook.com/cedjek" 
+  target="_blank" 
+  rel="noopener noreferrer" 
+  className="flex items-center gap-2 text-[#e65100] font-bold p-2"
+>
+  <span className="w-5 h-5 flex items-center justify-center bg-[#e65100] text-white rounded-full text-[10px]">f</span> 
+  Facebook
+</a>
         </div>
       )}
     </header>
