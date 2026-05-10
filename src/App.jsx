@@ -6,6 +6,34 @@ const apiKey = "AIzaSyBSKDTrsyiSQm3e2Z12BGhd7rSEAkAoNCA";
 const INQUIRY_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz2hwh-1KQ-6IxCVRPATmDnWjgt9Op3dnhDzyKpUf-zJMqIT4HUf8foM0iva1aCdOs/exec'; 
 const ORDERS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxKh4mCIQKcKEUmHiXLpMCPAOKmCQq3I8M6qzgu7n582x_IERimFna_YkDKrscQdx-wsA/exec';
 
+// --- PARTNERS DATA ---
+const PARTNERS_DATA = [
+   {
+    name: "Awel Poultry & Agri Supply",
+    location: "Maria Aurora, Aurora",
+    specialty: "Piggery Farm",
+    image: "/partner-farm-3.jpg", 
+    description: ""
+  },
+  
+  {
+    name: "Mikkos Agricultural & Poultry Supply",
+    location: "Maria Aurora, Aurora",
+    specialty: "Piggery Farm",
+    image: "/partner-farm-2.jpg", 
+    description: ""
+  },
+ 
+  {
+    name: "BLNT Piggery", 
+    location: "Maria Aurora, Aurora",
+    specialty: "Small Piggery Farm",
+    image: "/partner-farm-1.jpg", 
+    description: "A dedicated local partner specializing in small-scale, high-attention piggery management. Their commitment to Aurora’s local agricultural traditions ensures every harvest meets our family-standard quality.",
+    link: "https://www.facebook.com/BLNTPiggery"
+  },
+  
+];
 // --- AI Integration with Gemini (Not yet done pang future eme)
 const generateWithGemini = async (prompt) => {
   if (!apiKey) return "AI currently busy!";
@@ -257,7 +285,7 @@ formPayload.append('receiptFile', fileData);
                 <div className="flex flex-col items-center p-4 border-2 border-dashed border-orange-200 rounded-2xl bg-orange-50 mt-3">
                   <p className="text-[10px] font-black mb-2 text-[#e65100]">SCAN TO PAY (BANK)</p>
                   <img src="/bank-qr.png" alt="Bank QR" className="w-32 h-32 rounded-lg bg-white p-1" />
-                  <span className="text-[10px] font-bold text-[#4a3424] mt-2 text-center">BDO<br/>J*e* B****t*e</span>
+                  <span className="text-[10px] font-bold text-[#4a3424] mt-2 text-center">BDO<br/>J*** *******e</span>
                 </div>
               )}
 
@@ -266,7 +294,7 @@ formPayload.append('receiptFile', fileData);
                 <div className="flex flex-col items-center p-4 border-2 border-dashed border-blue-100 rounded-2xl bg-blue-50 mt-3">
                   <p className="text-[10px] font-black mb-2 text-blue-600">SCAN TO PAY (GCASH)</p>
                   <img src="/gcash-qr.png" alt="GCash QR" className="w-32 h-32 rounded-lg bg-white p-1" />
-                  <span className="text-[10px] font-bold text-[#4a3424] mt-2">GCASH: 0961-842-0618<br/>J*e* B****t*e</span>
+                  <span className="text-[10px] font-bold text-[#4a3424] mt-2">GCASH: ***-***-0618<br/>J*e* B****t*e</span>
                 </div>
               )}
 
@@ -457,24 +485,68 @@ const handleSubmit = async (e) => {
 
 const Header = ({ currentView, setCurrentView }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const navItems = ['About', 'Contact', 'Product Offerings', 'Services'];
+  // Using the naming convention that matches your App state
+  const navItems = ['About', 'Contact', 'Products', 'Partners', 'Services'];
+
   return (
     <header className="fixed w-full top-0 z-50 bg-[#eae6e1]/90 backdrop-blur-md px-6 py-4 flex justify-between items-center text-[#4a3424] border-b border-black/5">
       <div className="flex items-center gap-2 cursor-pointer" onClick={() => setCurrentView('about')}>
         <img src="/logo.jpg" alt="Logo" className="h-10 w-10 object-contain rounded-lg" />
         <span className="font-black text-xl tracking-widest hidden sm:block">CEDJEK</span>
       </div>
-      <nav className="hidden md:flex gap-8 text-sm font-bold">
+      
+      <nav className="hidden md:flex gap-8 text-sm font-bold items-center">
         {navItems.map(item => (
-          <button key={item} onClick={() => setCurrentView(item.toLowerCase().replace(' ', '-'))} className={`hover:text-[#e65100] transition-colors ${currentView === item.toLowerCase().replace(' ', '-') ? 'border-b-2 border-[#4a3424] pb-1' : ''}`}>{item}</button>
+          <button 
+            key={item} 
+            onClick={() => setCurrentView(item.toLowerCase())} 
+            className={`hover:text-[#e65100] transition-colors ${currentView === item.toLowerCase() ? 'border-b-2 border-[#4a3424] pb-1' : ''}`}
+          >
+            {item}
+          </button>
         ))}
+
+        {/* Facebook Link beside Services */}
+        <a 
+          href="https://www.facebook.com/cedjek" // Your FB Link
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="ml-2 p-2 text-[#4a3424] hover:text-[#e65100] transition-all hover:scale-110"
+          title="Follow us on Facebook"
+        >
+          <img 
+  src="https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg" 
+  alt="Facebook" 
+  className="w-5 h-5" 
+  style={{ filter: 'sepia(1) saturate(5) hue-rotate(330deg) brightness(0.5)' }} 
+/>
+        </a>
       </nav>
-      <button className="md:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>{mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}</button>
+
+      <button className="md:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+        {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+      </button>
+
       {mobileMenuOpen && (
         <div className="absolute top-full left-0 w-full bg-[#eae6e1] border-t p-4 flex flex-col items-center gap-4 shadow-xl">
           {navItems.map(item => (
-            <button key={item} onClick={() => { setCurrentView(item.toLowerCase().replace(' ', '-')); setMobileMenuOpen(false); }} className="font-bold text-lg">{item}</button>
+            <button 
+              key={item} 
+              onClick={() => { setCurrentView(item.toLowerCase()); setMobileMenuOpen(false); }} 
+              className="font-bold text-lg"
+            >
+              {item}
+            </button>
           ))}
+          {/* Mobile Facebook Link */}
+          <a 
+            href="https://www.facebook.com/cedjek" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="flex items-center gap-2 text-[#e65100] font-bold"
+          >
+            <Link size={20} /> Facebook
+          </a>
         </div>
       )}
     </header>
@@ -526,6 +598,49 @@ const Footer = () => (
   </footer>
 );
 
+// --- NEW PARTNERS VIEW ---
+const PartnersView = () => (
+  <div className="pt-24 min-h-screen bg-[#eae6e1]">
+    <div className="px-8 md:px-16 py-12 md:py-24 text-[#4a3424] max-w-7xl mx-auto">
+      <h1 className="text-4xl md:text-5xl font-black mb-6 uppercase tracking-wide">Our Trusted Partners</h1>
+      <p className="font-medium mb-16 text-sm max-w-2xl">We bridge the gap between quality production and your kitchen by collaborating with the best agricultural minds in Aurora.</p>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        {PARTNERS_DATA.map((partner, index) => (
+          <div key={index} className="bg-white rounded-[2rem] overflow-hidden shadow-sm border border-gray-100 group hover:shadow-xl transition-all flex flex-col">
+            <div className="h-56 overflow-hidden">
+              <img src={partner.image} alt={partner.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+            </div>
+            <div className="p-8 flex-1 flex flex-col">
+              <div className="flex justify-between items-start mb-4">
+                <div>
+                  <h3 className="font-black text-xl uppercase text-[#4a3424]">{partner.name}</h3>
+                  <p className="text-[10px] font-black text-[#e65100] tracking-widest uppercase">{partner.specialty}</p>
+                </div>
+                <MapPin size={16} className="text-gray-400" />
+              </div>
+              <p className="text-xs font-bold text-gray-400 mb-4 flex items-center gap-1 uppercase tracking-tighter">{partner.location}</p>
+              <p className="text-sm font-medium text-gray-700 leading-relaxed mb-6">{partner.description}</p>
+              
+              {/* --- ADDED CLICKABLE LINK START --- */}
+              {partner.link && (
+                <a 
+                  href={partner.link} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="mt-auto inline-flex items-center justify-center gap-2 bg-[#4a3424] text-white py-3 px-6 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-[#e65100] transition-colors w-full"
+                >
+                  Visit Facebook Page
+                </a>
+              )}
+              {/* --- ADDED CLICKABLE LINK END --- */}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+);
 // --- VIEWS ---
 
 const AboutView = () => (
@@ -533,9 +648,9 @@ const AboutView = () => (
     <div className="flex-1 grid grid-cols-1 lg:grid-cols-2">
       <div className="px-8 md:px-16 py-12 md:py-24 text-[#4a3424] max-w-2xl flex flex-col justify-center">
         <h1 className="text-4xl md:text-5xl font-black mb-6 uppercase tracking-wide">Who are we?</h1>
-        <p className="font-medium mb-12 text-sm leading-relaxed">Quality ingredients are the heart of a great menu. At Ced Jek, we specialize in delivering farm-fresh pork directly to local businesses in Maria Aurora, Aurora.</p>
+        <p className="font-medium mb-12 text-sm leading-relaxed">Quality ingredients are the heart of a great menu. At Ced Jek, we specialize in delivering farm-fresh pork directly to local businesses in Aurora Province.</p>
         <h2 className="text-2xl font-black mb-4 tracking-wide uppercase">Our Roots & Commitment</h2>
-        <p className="text-sm font-medium mb-12 leading-relaxed"> Established in 2021, we have built our reputation on a transparent and reliable supply chain. As a business led by a former Pastor and a family of Agriculturist with deep roots in the local agricultural community, we understand the technical side of quality production and biosecurity. This expertise allows us to bridge the gap between safe, quality farming and your kitchen.</p>
+        <p className="text-sm font-medium mb-12 leading-relaxed"> Established in 2021, we have built our reputation on a transparent and reliable supply chain. As a business led by a former Pastor and a family of Agriculturist, we understand the technical side of quality production and biosecurity. This expertise allows us to bridge the gap between safe, quality farming and your kitchen.</p>
          <h2 className="text-2xl font-black mb-4 tracking-wide">WHY PARTNER WITH US?</h2>
         <p className="font-medium text-sm leading-relaxed">
           Beyond our own production, we maintain a vast network of well-established piggery suppliers. This ensures that we can consistently meet your volume requirements while maintaining the standards you expect for your customers.
@@ -740,7 +855,8 @@ export default function App() {
       <main>
         {currentView === 'about' && <AboutView />}
         {currentView === 'contact' && <ContactView />}
-        {currentView === 'product-offerings' && <ProductsView />}
+        {currentView === 'products' && <ProductsView />}
+        {currentView === 'partners' && <PartnersView />}
         {currentView === 'services' && <FAQView />}
       </main>
       <Footer />
