@@ -68,7 +68,7 @@ const generateWithGemini = async (prompt) => {
 };
 
 // --- DATA ---
-const FAQ_DATA = [
+const FAQs_DATA = [
   {
     question: "What services do you offer?",
     answer: "We specialize in bulk orders of primal cuts, specialty custom cuts, and our signature house-blend longanisa. We offer flexible fulfillment options including door-to-door delivery and scheduled in-store pick-ups."
@@ -95,7 +95,7 @@ const FAQ_DATA = [
 ];
 
 // --- DATA ---
-const PartnerFAQ_DATA = [
+const PartnerFAQs_DATA = [
   {
     question: "What services do you offer?",
     answer: "We specialize in bulk orders of primal cuts, specialty custom cuts, and our signature house-blend longanisa. We offer flexible fulfillment options including door-to-door delivery and scheduled in-store pick-ups."
@@ -495,7 +495,7 @@ const handleSubmit = async (e) => {
 const Header = ({ currentView, setCurrentView }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   // Using the naming convention that matches your App state
-  const navItems = ['About', 'Contact', 'Products', 'Partners', 'Services'];
+  const navItems = ['About', 'Contact Us', 'Products', 'Partners', 'FAQs'];
 
   return (
     <header className="fixed w-full top-0 z-50 bg-[#eae6e1]/90 backdrop-blur-md px-6 py-4 flex justify-between items-center text-[#4a3424] border-b border-black/5">
@@ -679,7 +679,7 @@ const AboutView = () => (
   </div>
 
 );
-const ContactView = () => (
+const ContactUsView = () => (
   <div className="pt-24 min-h-screen bg-[#eae6e1]">
     <div className="grid grid-cols-1 lg:grid-cols-2 h-full min-h-[80vh]">
       <div className="px-8 md:px-16 py-12 md:py-24 text-[#4a3424] flex flex-col justify-center max-w-2xl">
@@ -812,18 +812,18 @@ const ProductsView = () => {
   );
 };
 
-const FAQView = () => {
+const FAQsView = () => {
   const [openIndex, setOpenIndex] = useState(0);
   return (
     <div className="pt-24 min-h-screen bg-[#eae6e1] px-8 md:px-16">
       <div className="max-w-6xl mx-auto py-12 md:py-24 grid grid-cols-1 md:grid-cols-2 gap-16">
         <div>
           <h1 className="text-4xl font-black mb-12 uppercase tracking-wide">
-            FAQ
+            FAQs
           </h1>
         </div>
         <div className="border-t border-[#d5d0ca]">
-          {FAQ_DATA.map((item, index) => ( 
+          {FAQs_DATA.map((item, index) => ( 
             <div key={index} className="border-b border-[#d5d0ca]">
               <button 
                 onClick={() => setOpenIndex(openIndex === index ? -1 : index)} 
@@ -863,10 +863,10 @@ export default function App() {
       <Header currentView={currentView} setCurrentView={setCurrentView} />
       <main>
         {currentView === 'about' && <AboutView />}
-        {currentView === 'contact' && <ContactView />}
+        {currentView === 'contact us' && <ContactUsView />}
         {currentView === 'products' && <ProductsView />}
         {currentView === 'partners' && <PartnersView />}
-        {currentView === 'services' && <FAQView />}
+        {currentView === 'faqs' && <FAQsView />}
       </main>
       <Footer />
     </div>
