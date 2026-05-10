@@ -9,6 +9,15 @@ const ORDERS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxKh4mCIQKcKE
 // --- PARTNERS DATA ---
 const PARTNERS_DATA = [
    {
+    name: "Cheng Agricultural and Poultry Supply", 
+    location: "Maria Aurora, Aurora",
+    specialty: "Farm",
+    image: "/partner-farm-4.jpg", 
+    description: "Specializes in large-scale piggery management with a focus on precision and consistency. Their expansive operations allow us to meet high-volume demands without ever compromising the premium quality our customers expect.",
+    link: "https://www.facebook.com/cheng.agricutural.and.poultry.supply/"
+  },
+  
+  {
     name: "Awel Poultry & Agri Supply",
     location: "Maria Aurora, Aurora",
     specialty: "Piggery Farm",
