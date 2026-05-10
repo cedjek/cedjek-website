@@ -38,7 +38,7 @@ const PARTNERS_DATA = [
     location: "Maria Aurora, Aurora",
     specialty: "Small Piggery Farm",
     image: "/partner-farm-1.jpg", 
-    description: "A dedicated local partner specializing in small-scale, high-attention piggery management. Their commitment to Aurora’s local agricultural traditions ensures every harvest meets our family-standard quality.",
+    description: "A dedicated local partner specializing in small-scale, piggery management.",
     link: "https://www.facebook.com/BLNTPiggery"
   },
   
