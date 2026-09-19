@@ -233,8 +233,8 @@ formPayload.append('receiptFile', fileData);
         {success ? (
           <div className="py-12 text-center">
             <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6"><ShoppingCart size={40}/></div>
-            <h2 className="text-3xl font-black text-[#4a3424]">Order Received!</h2>
-            <p className="text-gray-500 mt-2 text-sm font-bold">Check your SMS or Email for confirmation shortly.</p>
+            <h2 className="text-3xl font-black text-[#4a3424]">Sorry, something went wrong. Please direct your message to our Facebook Page Cedjek.</h2>
+            <p className="text-gray-500 mt-2 text-sm font-bold">Sorry, something went wrong. Please direct your message to our Facebook Page Cedjek.</p>
           </div>
         ) : (
           <form onSubmit={handleOrder} className="space-y-4">
@@ -294,7 +294,7 @@ formPayload.append('receiptFile', fileData);
                 <div className="flex flex-col items-center p-4 border-2 border-dashed border-orange-200 rounded-2xl bg-orange-50 mt-3">
                   <p className="text-[10px] font-black mb-2 text-[#e65100]">SCAN TO PAY (BANK)</p>
                   <img src="/bank-qr.png" alt="Bank QR" className="w-32 h-32 rounded-lg bg-white p-1" />
-                  <span className="text-[10px] font-bold text-[#4a3424] mt-2 text-center">BDO<br/>J*** *******e</span>
+                  <span className="text-[10px] font-bold text-[#4a3424] mt-2 text-center"><Error></Error><br/>Error</span>
                 </div>
               )}
 
@@ -303,7 +303,7 @@ formPayload.append('receiptFile', fileData);
                 <div className="flex flex-col items-center p-4 border-2 border-dashed border-blue-100 rounded-2xl bg-blue-50 mt-3">
                   <p className="text-[10px] font-black mb-2 text-blue-600">SCAN TO PAY (GCASH)</p>
                   <img src="/gcash-qr.png" alt="GCash QR" className="w-32 h-32 rounded-lg bg-white p-1" />
-                  <span className="text-[10px] font-bold text-[#4a3424] mt-2">GCASH: ***-***-0618<br/>J*e* B****t*e</span>
+                  <span className="text-[10px] font-bold text-[#4a3424] mt-2">Error<br/>Error</span>
                 </div>
               )}
 
@@ -482,7 +482,7 @@ const handleSubmit = async (e) => {
       </div>
 
       {success ? (
-        <div className="bg-green-100 text-green-800 px-4 py-3 rounded-full font-bold inline-block">Thank you! We've received your message.</div>
+        <div className="bg-green-100 text-green-800 px-4 py-3 rounded-full font-bold inline-block">Sorry, something went wrong. Please direct your message to our Facebook Page Cedjek.</div>
       ) : (
         <button type="submit" disabled={isSubmitting} className="bg-[#4a3424] text-white px-8 py-2 rounded-full font-bold uppercase tracking-wider hover:bg-black transition-colors">
           {isSubmitting ? 'Sending...' : 'Submit'}
@@ -846,7 +846,7 @@ const FAQsView = () => {
       <div className="max-w-6xl mx-auto py-12 grid grid-cols-1 md:grid-cols-2 gap-16">
         <div>
           <h2 className="text-3xl font-black mb-4 uppercase">Have Questions?</h2>
-          <p className="font-medium text-sm">We'll get back to you within 48 hours.</p>
+          <p className="font-medium text-sm">Please direct your message to our Facebook Page Cedjek.</p>
         </div>
         <Form />
       </div>
